@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Chief Technology Officer</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="logo">Logo</string>
+    <string name="v_deos">Vídeos</string>
+    <string name="imagens">Imagens</string>
+    <string name="audio">Audio</string>
+    <string name="gr_ficos">Gráficos</string>
+    <string name="anima_es">Animações</string>
+</resources>
