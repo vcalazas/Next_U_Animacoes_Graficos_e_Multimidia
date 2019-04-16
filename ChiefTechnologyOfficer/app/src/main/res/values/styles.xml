@@ -17,4 +17,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="btnDefault" >
+
+        <item name="android:background" >@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
+
+        <item name="android:layout_margin">@dimen/small</item>
+
+        <item name="android:layout_height">@dimen/btnNormal</item>
+
+    </style>
+
 </resources>
