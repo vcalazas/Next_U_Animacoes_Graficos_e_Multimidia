@@ -1,5 +1,6 @@
 package com.example.android.chieftechnologyofficer.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import com.example.android.chieftechnologyofficer.fragments.GraphFragment;
 import com.example.android.chieftechnologyofficer.fragments.ImagesFragment;
 import com.example.android.chieftechnologyofficer.fragments.VideoFragment;
 import com.example.android.chieftechnologyofficer.interfaces.OnListener;
+import com.example.android.chieftechnologyofficer.utils.MyPermissions;
 import com.transitionseverywhere.Rotate;
 import com.transitionseverywhere.TransitionManager;
 
@@ -43,14 +45,14 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -63,7 +65,7 @@ public class HomeActivity extends AppCompatActivity
 
         startListener();
         mainActMainLayout = findViewById(R.id.mainActMainLayout);
-        navigator(R.id.fragment_content, AnimationFragment.FRAGMENT_NAME, null);
+        navigator(R.id.fragment_content, ImagesFragment.FRAGMENT_NAME, null);
     }
 
     @Override
@@ -240,6 +242,12 @@ public class HomeActivity extends AppCompatActivity
 
     private void goImages(int frameLayout, Bundle arguments){
         try {
+            final String[] PERMISSOES={
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            };
+
+            MyPermissions.check(HomeActivity.this, PERMISSOES);
+
             ImagesFragment imagesFragment = new ImagesFragment();
             imagesFragment.setmListener(HomeActivity.this.mListener);
             if( arguments != null ){

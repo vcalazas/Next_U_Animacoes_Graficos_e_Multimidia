@@ -1,6 +1,7 @@
 package com.example.android.chieftechnologyofficer.fragments;
 
 
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.chieftechnologyofficer.R;
+import com.example.android.chieftechnologyofficer.extras.MyRenderer;
 import com.example.android.chieftechnologyofficer.interfaces.OnListener;
 
 /**
@@ -16,6 +18,7 @@ import com.example.android.chieftechnologyofficer.interfaces.OnListener;
 public class GraphFragment extends Fragment {
     public static final String FRAGMENT_NAME = "GraphFragment";
     private OnListener mListener;
+    private GLSurfaceView Tela;
 
     public GraphFragment() {
         // Required empty public constructor
@@ -29,7 +32,11 @@ public class GraphFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_graph, container, false);
+        //return inflater.inflate(R.layout.fragment_graph, container, false);
+
+        Tela = new GLSurfaceView(getContext());
+        Tela.setRenderer(new MyRenderer(getContext()));
+        return Tela;
     }
 
 }
