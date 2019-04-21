@@ -12,12 +12,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="160dp"
-        android:layout_height="195dp"
+        android:layout_width="@dimen/star"
+        android:layout_height="@dimen/star"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_cloud_computing"
+        android:src="@drawable/ic_star"
         app:layout_constraintBottom_toTopOf="@+id/labeled"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -30,29 +30,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginBottom="32dp"
         android:orientation="horizontal"
+        android:padding="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        android:padding="20sp">
+        tools:ignore="MissingConstraints">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
             android:clickable="true"
-            android:src="@drawable/ic_action_name"
-            android:layout_marginRight="20sp"/>
+            android:src="@drawable/ic_action_name" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="20sp"
             android:clickable="true"
             android:src="@drawable/ic_action_pause" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/ic_action_stop" />
     </LinearLayout>
 
 

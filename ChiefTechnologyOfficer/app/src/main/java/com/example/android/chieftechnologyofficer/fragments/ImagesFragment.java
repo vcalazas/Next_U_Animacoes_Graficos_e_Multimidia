@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,9 @@ import com.example.android.chieftechnologyofficer.R;
 import com.example.android.chieftechnologyofficer.interfaces.OnListener;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -33,9 +37,10 @@ public class ImagesFragment extends Fragment {
     public static final String FRAGMENT_NAME = "ImagesFragment";
     private static final int REQUEST_CODE_FOR_GALERY =1;
     private static final int REQUEST_CODE_FOR_CAMERA =2;
+    private String currentPhotoPath, imageFileName;
     private OnListener mListener;
     private ImageView imageView3;
-    private TextView textView2;
+    private TextView textView;
 
     public ImagesFragment() {
         // Required empty public constructor
@@ -57,34 +62,22 @@ public class ImagesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i= new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i,2);
+                startActivityForResult(i,REQUEST_CODE_FOR_GALERY);
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                    File imagemFolder = new File(Environment.getExternalStorageDirectory(),"CameraFolder");
-
-                    imagemFolder.mkdirs();
-
-                    File imagem = new File(imagemFolder, "foto.jpg");
-
-                    Uri uriImagem = Uri.fromFile(imagem);
-
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,uriImagem);
-
-                    getActivity().startActivityForResult(cameraIntent, REQUEST_CODE_FOR_CAMERA);
+                    dispatchTakePictureIntent();
                 } catch (Exception e){
-                    Toast.makeText(getContext(), "Falha ao abrie a camera", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Falha ao abrir a camera", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
         imageView3 = view.findViewById(R.id.imageView3);
-        textView2 = view.findViewById(R.id.textView2);
+        textView = view.findViewById(R.id.textView);
 
         return view;
     }
@@ -92,7 +85,7 @@ public class ImagesFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent Data){
         super.onActivityResult(requestCode,resultCode,Data);
         try {
-            if (requestCode == 2 && resultCode == RESULT_OK && null !=Data){
+            if (requestCode == REQUEST_CODE_FOR_GALERY && resultCode == RESULT_OK && null !=Data){
                 Bitmap bitmap = null;
                 Uri imagemescolhido = Data.getData();
                 String[] path = {MediaStore.Images.Media.DATA};
@@ -100,7 +93,7 @@ public class ImagesFragment extends Fragment {
                 cursor.moveToFirst();
                 int coluna = cursor.getColumnIndex(path[0]);
                 String pathimagem = cursor.getString(coluna);
-                textView2.setText(pathimagem);
+                textView.setText(pathimagem);
                 cursor.close();
                 bitmap = BitmapFactory.decodeFile(pathimagem);
                 int height = bitmap.getHeight();
@@ -112,28 +105,53 @@ public class ImagesFragment extends Fragment {
                 Bitmap novaimagem = Bitmap.createBitmap(bitmap,0,0,width,height,matrix,true);
                 imageView3.setImageBitmap(novaimagem);
             } else if (requestCode == REQUEST_CODE_FOR_CAMERA && resultCode == RESULT_OK){
-                Toast.makeText(getContext(), "a imagem foi salva:\n"+ Environment.getExternalStorageDirectory()+ "/CameraFolder/foto.jpg", Toast.LENGTH_LONG).show();
-
-                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+"/CameraFolder/foto.jpg");
-
-                int height = bitmap.getHeight();
-                int width = bitmap.getWidth();
-
-                float scaleA = ((float)(width/2))/width;
-                float scaleB = ((float)(height))/height;
-
-                Matrix matrix = new Matrix();
-                matrix.postScale(scaleA,scaleB);
-
-                Bitmap novaImagem = Bitmap.createBitmap(bitmap,0,0,width,height,matrix,true);
-
-                imageView3.setImageBitmap(novaImagem);
-
+                Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+                imageView3.setImageBitmap(bitmap);
             }else {
                 Toast.makeText(getContext(), "a imagem não foi salva corretamente no dispositivo", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e){
-            textView2.setText(getActivity().getString(R.string.nenhum_arquivo_selecionado));
+            textView.setText(getActivity().getString(R.string.nenhum_arquivo_selecionado));
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Toast.makeText(getContext(), "Falha ao abrir a camera", Toast.LENGTH_LONG).show();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+                startActivityForResult(takePictureIntent, REQUEST_CODE_FOR_CAMERA);
+            }
         }
     }
 

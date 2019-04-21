@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //linearLayout = findViewById(R.id.linearLayout);
-        //linearLayout.setAnimation(animation);
-        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+        linearLayout = findViewById(R.id.linearLayout);
+        linearLayout.setAnimation(animation);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.android.chieftechnologyofficer.fragments;
 
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -23,6 +25,7 @@ public class AnimationFragment extends Fragment {
 
     private ImageView imageView;
     private Animation animation;
+    private AnimatorSet animatorSet;
 
     private OnListener mListener;
 
@@ -43,19 +46,30 @@ public class AnimationFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         FloatingActionButton floatingActionButton2 = view.findViewById(R.id.floatingActionButton2);
         FloatingActionButton floatingActionButton3 = view.findViewById(R.id.floatingActionButton3);
+        FloatingActionButton floatingActionButton4 = view.findViewById(R.id.floatingActionButton4);
+
+        animation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
+        animatorSet = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.rotate);
 
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
-                imageView.setAnimation(animation);
+               animatorSet.setTarget(imageView);
+               animatorSet.start();
             }
         });
 
         floatingActionButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageView.clearAnimation();
+                animatorSet.pause();
+            }
+        });
+
+        floatingActionButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animatorSet.end();
             }
         });
 

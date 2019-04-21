@@ -3,8 +3,8 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Chief Technology Officer</string>
+    <string name="nav_header_subtitle">vcalazas@gmail.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="logo">Logo</string>
@@ -21,4 +21,5 @@
     <string name="nenhum_arquivo_selecionado">Nenhum arquivo selecionado.</string>
     <string name="come_ar_a_gravar">Começar a gravar</string>
     <string name="reproduzir_udio">Reproduzir áudio</string>
+    <string name="parar_udio">Parar áudio</string>
 </resources>
